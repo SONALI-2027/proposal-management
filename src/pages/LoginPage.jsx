@@ -1,20 +1,48 @@
 import { useState } from "react";
+import axios from "axios";
 
-function LoginPage({setPage}) {
+function LoginPage({ setPage, setIsLoggedIn }) {
 const[passw,setPassw]=useState("");
 const[userId,setUserId]=useState("");
-async function handleLogin() {
-    try {
+async function handleLogin(){
+
+    try{
+
+        const response = await axios.post(
+            "http://localhost:8080/api/employees/login",
+            null,
+            {
+                params:{
+                    username:userId,
+                    password:passw
+                }
+            }
+        );
+       if(response.data){
+    setIsLoggedIn(true);
+    if(response.data.role.roleName==="ADMIN"){
+        setPage("adminDashboard");
+    }
+    else if(response.data.role.roleName==="PAC_MEMBER"){
+        setPage("pacDashboard");
+    }
+    else{
         setPage("dashboard");
     }
-    catch(error) {
-        alert("Invalid username or password");
+}
+        else{
+            alert("Invalid Credentials");
+        }
+
+    }
+    catch(error){
+        alert("Invalid Credentials");
     }
 }
 
   return (
     <>
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-white to-green-100 flex justify-center items-center">
+    <div className="flex justify-center items-center pt-24">
         <div className="bg-white w-[450px] rounded-3xl p-10 shadow-2xl border-t-8 border-orange-600">
             <h1 className="text-4xl font-bold text-blue-900 mb-8 text-center">Sign-in Page</h1>
             <input type="text" placeholder="enter username" className="w-full bg-orange-50 border-2 border-orange-300 rounded-xl p-4 text-gray-800 mb-5 outline-none focus:border-orange-600" value={userId} onChange={(e)=>setUserId(e.target.value)}/>

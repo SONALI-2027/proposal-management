@@ -1,5 +1,5 @@
 package com.proposal.serviceimpl;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -13,9 +13,7 @@ import java.util.List;
 public class ProposalServiceImpl implements ProposalService{
 	private final ProposalRepository repo;
 	
-	 @Autowired
-	    private BCryptPasswordEncoder passwordEncoder;
-	}
+	
 	
 	public ProposalServiceImpl(ProposalRepository repo) {
 		this.repo=repo;
@@ -29,4 +27,36 @@ public class ProposalServiceImpl implements ProposalService{
 	public List<Proposal> getAll(){
 		return repo.findAll();
 	}
+	
+	 @Override
+	    public Proposal reviewProposal(
+	            Long id,
+	            String review) {
+
+	        Proposal proposal =
+	                repo.findById(id).orElse(null);
+
+	        proposal.setReview(review);
+
+	        proposal.setStatus("CHANGES_REQUIRED");
+
+	        return repo.save(proposal);
+	    }
+	 @Override
+	 public Proposal getProposalById(Long id) {
+
+	     return repo.findById(id)
+	                .orElseThrow();
+	 }
+
+	    @Override
+	    public Proposal approveProposal(Long id) {
+
+	        Proposal proposal =
+	                repo.findById(id).orElse(null);
+
+	        proposal.setStatus("APPROVED");
+
+	        return repo.save(proposal);
+	    }
 }

@@ -8,12 +8,19 @@ function ProposalPage({setPage}){
     const[descp,setDescp]=useState("");
     const[file,setFile]=useState(null);
     const[message,setMessage]=useState("");
+    const [groupHeadName, setGroupHeadName] = useState("");
+    const [projectCoordinator, setProjectCoordinator] = useState("");
 
     async function handleSubmit(){
-
+if(!file){
+        alert("Please upload a PDF file");
+        return;
+    }
    const formData = new FormData();
 
 formData.append("departmentName", deptname);
+formData.append("groupHeadName", groupHeadName);
+formData.append("projectCoordinator", projectCoordinator);
 formData.append("title", title);
 formData.append("date", date);
 formData.append("description", descp);
@@ -32,7 +39,7 @@ formData.append("file", file);
 
 return(
     <>
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-white to-green-100 flex justify-center items-center py-10">
+    <div className="flex justify-center py-16">
         <div className="bg-slate-900 w-[700px] rounded-3xl p-10 shadow-2xl">
             <h1 className="text-orange-700 text-4xl font-bold mb-8">PROPOSAL</h1>
             <input type="text" className="w-full bg-orange-50 border-2 border-orange-300 rounded-xl p-4 text-gray-800 focus:border-orange-600 mb-5 outline-none" placeholder="enter department name" value={deptname} onChange={(e) => {
@@ -41,6 +48,21 @@ return(
             setDeptname(value);
         }
     }}/>
+    <input
+type="text"
+className="w-full bg-orange-50 border-2 border-orange-300 rounded-xl p-4 text-gray-800 focus:border-orange-600 mb-5 outline-none"
+placeholder="Enter Group Head Name"
+value={groupHeadName}
+onChange={(e)=>setGroupHeadName(e.target.value)}
+/>
+
+<input
+type="text"
+className="w-full bg-orange-50 border-2 border-orange-300 rounded-xl p-4 text-gray-800 focus:border-orange-600 mb-5 outline-none"
+placeholder="Enter Project Coordinator"
+value={projectCoordinator}
+onChange={(e)=>setProjectCoordinator(e.target.value)}
+/>
             <input className="w-full bg-orange-50 border-2 border-orange-300 rounded-xl p-4 text-gray-800 focus:border-orange-600 mb-5 outline-none" type="text" placeholder="enter department title" value={title} onChange={(e)=>{setTitle(e.target.value)}}/>
             <input type="date" className="w-full bg-orange-50 border-2 border-orange-300 rounded-xl p-4 text-gray-800 focus:border-orange-600 mb-5 outline-none" placeholder="enter the date" value={date} onChange={(e)=>{setDate(e.target.value)}}/>
             <textarea className="w-full bg-orange-50 border-2 border-orange-300 rounded-xl p-4 text-gray-800 focus:border-orange-600 mb-5 outline-none" type="text" placeholder="enter description" value={descp} onChange={(e)=>{setDescp(e.target.value)}}/>
